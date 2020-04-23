@@ -78,10 +78,11 @@ Pipeline 包含一组顺序执行的stage
 
 ```yaml
 stages:
-- stage: string  # name of the stage (A-Z, a-z, 0-9, and underscore)
+- stage: 
+  name:  # name of the stage (A-Z, a-z, 0-9, and underscore)
   displayName: string  # friendly name to display in the UI
   container: [ container ]
-  repositories: [ repository ]
+  repository: repository 
   #dependsOn: string | [ string ] # not support
   #condition: string # not support
   variables: # several syntaxes, see specific section
@@ -96,7 +97,8 @@ Job就是一系列具体步骤的执行，在一个node上，job也是顺序执�
 
 ```yaml
 jobs:
-- job: string  # name of the job (A-Z, a-z, 0-9, and underscore)
+- job: 
+  name:  # name of the job (A-Z, a-z, 0-9, and underscore)
   displayName: string  # friendly name to display in the UI
   #dependsOn: string | [ string ] # not support
   #condition: string # not support
@@ -110,7 +112,6 @@ jobs:
     #clean: outputs | resources | all # what to clean up before the job runs
   container: containerReference # container to run this job inside of
   timeoutInMinutes: number # how long to run the job before automatically cancelling
-  cancelTimeoutInMinutes: number # how much time to give 'run always even if cancelled tasks' before killing them
   variables: # several syntaxes, see specific section
   steps: [ script ] # cmd | pwsh | powershell | checkout | task | templateReference 
   #services: { string: string | container } # container resources to run as a service container
@@ -123,11 +124,11 @@ container:
   image: string  # container image name
   options: string  # arguments to pass to container at startup
   endpoint: string  # endpoint for a private container registry
-  options: string  # arguments to pass to container at startup
-  env: { string: string }  # list of environment variables to add
+  env: [ string ]  # list of environment variables to add
   ports: [ string ] # ports to expose on the container
   volumes: [ string ] # volumes to mount on the container
-  mapDockerSocket: bool # whether to map in the Docker daemon socket; defaults to true
+  cmd: [ string ] # start  container pass cmd
+  #mapDockerSocket: bool # whether to map in the Docker daemon socket; defaults to true
   #env: { string: string }  # list of environment variables to add
 ```
 
@@ -150,7 +151,7 @@ jobs:
 repository:   # identifier (A-Z, a-z, 0-9, and underscore)
     type: github/gitea  # currently only support github/gitea type
     name: string  # repository name (format depends on `type`)
-    ref: string  # ref name to use; defaults to 'refs/heads/master'
+    ref: string  # ref name to use; defaults to 'master'
     endpoint: string  # name of the service connection to use (for types that aren't Azure Repos)
 ```
 
@@ -200,7 +201,9 @@ Steps 是一组线性操作以构成一个job，每个step在container中运行�
 steps: [ script ]
 ------
 steps:
-- script: echo This runs in the default shell on any machine
+- script:
+    script: echo This runs in the default shell on any machine
+    type: bash
 ```
 
 ## Variables
